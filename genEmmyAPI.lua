@@ -160,8 +160,8 @@ local function genModule(name, api)
     -- modules
     if api.modules then
         for i, m in ipairs(api.modules) do
-            f:write("---@type " .. name .. '.' .. m.name .. '\n')
-            f:write(name .. "." .. m.name .. ' = nil\n\n')
+            --f:write("---@type " .. name .. '.' .. m.name .. '\n')
+            --f:write(name .. "." .. m.name .. ' = nil\n\n')
             genModule(name .. '.' .. m.name, m)
         end
     end
