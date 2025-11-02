@@ -13,6 +13,25 @@ local function stripNewlines(src)
     return string.gsub(src, "\n", " ")
 end
 
+local function getReturnType(ret)
+    -- Include fields with their types when the return type is a table with known fields and types
+    if ret.table then
+        local s = "{"
+        for i, field in ipairs(ret.table) do
+            local decl = field.name .. ":" .. field.type
+            if i == 1 then
+                s = s .. decl
+            else
+                s = s .. ', ' .. decl
+            end
+        end
+        s = s .. "}"
+        return s
+    else
+        return ret.type
+    end
+end
+
 local function genReturns(variant)
     local returns = variant.returns
     local s = ""
@@ -21,9 +40,9 @@ local function genReturns(variant)
         num = #returns
         for i, ret in ipairs(returns) do
             if i == 1 then
-                s = ret.type
+                s = getReturnType(ret)
             else
-                s = s .. ', ' .. ret.type
+                s = s .. ', ' .. getReturnType(ret)
             end
         end
     else
